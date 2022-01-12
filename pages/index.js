@@ -20,10 +20,10 @@ export async function getServerSideProps(context) {
     // if (window.history.replaceState) {
     //   window.history.replaceState(null, '', "/loggedin")
     // }
-    console.log("useful: ", "http://" + context.req.headers.host + "/");
+    console.log("useful: ", "https://" + context.req.headers.host + "/");
     const details = {
       code: authCode,
-      redirect_uri: encodeURI("http://" + context.req.headers.host + "/"),
+      redirect_uri: encodeURI("https://" + context.req.headers.host + "/"),
       grant_type: "authorization_code"
     }
 
@@ -76,7 +76,7 @@ export async function getServerSideProps(context) {
     }
   } else {
     console.log("Redirecting to Spotify login");
-    const redirect_uri = 'http://localhost:3000/'
+    const redirect_uri = "https://" + context.req.headers.host + "/"
     const reqScope = "user-top-read"
     // let state = generateRandomString(16);
     const paramsObj = {
