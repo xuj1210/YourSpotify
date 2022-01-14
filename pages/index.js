@@ -14,7 +14,7 @@ export async function getServerSideProps(context) {
   const searchParams = new URLSearchParams(context.req.url);
   const authCode = searchParams.get('/?code');
   console.log(authCode);
-  const redirectURI = "http://" + context.req.headers.host + "/";
+  const redirectURI = "https://" + context.req.headers.host + "/";
   if (authCode) {
     console.log('had authcode');
 
