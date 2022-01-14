@@ -18,6 +18,7 @@ export async function getServerSideProps(context) {
   if (authCode) {
     console.log('had authcode');
 
+
     // clean up url
 
     const details = {
