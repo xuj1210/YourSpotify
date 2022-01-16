@@ -1,12 +1,13 @@
 import { getSpotifyData } from '../lib/spotifyFunctions';
-import Image from 'next/image'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import ArtistsList from './artists-list';
+import Button from '@mui/material/Button'
 
 export async function getServerSideProps(context) {
-    console.log(context.req);
+    // console.log(context.req);
     const url = context.req.url;
     let i = 0;
     while (url[i] != '?') {
@@ -48,34 +49,26 @@ export async function getServerSideProps(context) {
 }
 
 
-export default function ArtistsList({ artists }) {
+export default function TopArtists({ artists }) {
     const router = useRouter();
     useEffect(() => {
         router.replace('/top-artists', undefined, { shallow: true });
+        /*
+        GET TOP ARTISTS HERE INSTEAD
+
+
+        */
     }, [])
 
     return (
         <div className={styles.container}>
             <Head>
-                <title>Songs</title>
+                <title>Top Artists</title>
+                <meta name="viewport" content="initial-scale=1, width=device-width" />
             </Head>
+            <Button variant="text" className="top-left" onClick={() => router.back()}>Back to home</Button>
             <div>
-                <ol>
-                    {artists && artists.map((artist) => {
-                        const imgObject = artist.images[2];
-                        return (
-                            <li key={artist.name}>
-                                {artist.name}
-                                <br />
-                                <Image
-                                    src={imgObject.url}
-                                    height={imgObject.height}
-                                    width={imgObject.width}
-                                />
-                            </li>
-                        )
-                    })}
-                </ol>
+                <ArtistsList artists={artists} />
             </div>
         </div>
     )

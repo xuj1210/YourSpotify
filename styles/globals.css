@@ -14,3 +14,41 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.emph {
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.top-left {
+  position: fixed !important;
+  top: 25px !important;
+  left: 25px !important;
+}
+
+.nav-arrow {
+  font-size: 13px;
+  font-weight: 300;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}

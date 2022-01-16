@@ -1,0 +1,11 @@
+ol {
+    margin: auto;
+    list-style-type: none;
+}
+
+
+li {
+    text-align: center;
+    margin: 0.5rem auto 0.5rem auto;
+    /* border: 1px solid black; */
+}
