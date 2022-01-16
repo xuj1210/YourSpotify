@@ -1,12 +1,13 @@
 import { getSpotifyData } from '../lib/spotifyFunctions';
-import Image from 'next/image'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react';
+import Button from '@mui/material/Button'
+import Image from 'next/image'
 
 export async function getServerSideProps(context) {
-    console.log(context.req);
+    // console.log(context.req);
     const url = context.req.url;
     let i = 0;
     while (url[i] != '?') {
@@ -31,6 +32,9 @@ export async function getServerSideProps(context) {
         const time_range = "short_term";
 
         const tracks = await getSpotifyData(authToken, type, time_range, limit);
+        // const shortTerm = await getSpotifyData(authToken, type, "short_term", limit);
+        // const mediumTerm = await getSpotifyData(authToken, type, "medium_term", limit);
+        // const longTerm = await getSpotifyData(authToken, type, "long_term", limit);
         // console.log(tracks);
 
         return {
@@ -47,7 +51,34 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default function TracksList({ tracks }) {
+const Track = ({ info, idx }) => {
+    const imgObject = info.album.images[1];
+    return (
+        <li key={info.name}>
+            {`${idx}. ${info.name}`}
+            <br />
+            <Image
+                src={imgObject.url}
+                height={imgObject.height / 2}
+                width={imgObject.width / 2}
+            />
+        </li>
+    )
+}
+
+const TracksList = ({ tracks }) => {
+    let i = 0;
+    return (
+        <ol>
+            {tracks && tracks.map(track => {
+                ++i;
+                return <Track info={track} idx={i} key={track.name} />
+            })}
+        </ol>
+    )
+}
+
+export default function TopTracks({ tracks }) {
     const router = useRouter();
     useEffect(() => {
         router.replace('/top-tracks', undefined, { shallow: true });
@@ -56,27 +87,16 @@ export default function TracksList({ tracks }) {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Songs</title>
+                <title>Top Tracks</title>
+                <meta name="viewport" content="initial-scale=1, width=device-width" />
+                <meta charSet='UTF-8' />
             </Head>
-            <div>
-                <ol>
-                    {tracks && tracks.map((track) => {
-                        // console.log('images: ', track.album.images);
-                        const imgObject = track.album.images[2];
-                        return (
-                            <li key={track.name}>
-                                {track.name}
-                                <br />
-                                <Image
-                                    src={imgObject.url}
-                                    height={imgObject.height}
-                                    width={imgObject.width}
-                                />
-                            </li>
-                        )
-                    })}
-                </ol>
-            </div>
+            <Button variant="text" className="top-left" onClick={() => router.back()}>Back to home</Button>
+            <main className={styles.main}>
+                <div>
+                    <TracksList tracks={tracks} />
+                </div>
+            </main>
         </div>
     )
 }
