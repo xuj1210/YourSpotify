@@ -86,6 +86,7 @@ export default function Home({ authToken }) {
         <meta name="description" content="See your listening habits" />
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta charSet="UTF-8" />
       </Head>
       <main className={styles.main}>
         {/* <ResponsiveAppBar code={authToken} /> */}
