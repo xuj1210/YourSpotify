@@ -18,8 +18,12 @@ const settings = ['Logout'];
 
 const ResponsiveAppBar = ({ token, userInfo }) => {
     console.log(userInfo.images[0].url);
-    const userPicture = userInfo.images[0].url;
-    const userName = userInfo.display_name;
+    let userPicture, userName;
+    if (userInfo) {
+        userPicture = userInfo.images[0].url;
+        userName = userInfo.display_name;
+    }
+
     const router = useRouter();
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
