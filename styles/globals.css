@@ -20,10 +20,9 @@ a {
   font-size: 20px;
 }
 
-.top-left {
-  position: fixed !important;
-  top: 25px !important;
-  left: 25px !important;
+.clickable {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .nav-arrow {

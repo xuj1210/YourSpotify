@@ -1,17 +1,27 @@
-import { getSpotifyData } from '../lib/spotifyFunctions';
+import { getSpotifyData, getUserInfo } from '../lib/spotifyFunctions';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react';
 import Button from '@mui/material/Button'
 import Image from 'next/image'
+import ResponsiveAppBar from './mui/ResponsiveAppBar';
 
 export async function getServerSideProps(context) {
     // console.log(context.req);
     const url = context.req.url;
     let i = 0;
-    while (url[i] != '?') {
+    while (url[i] && url[i] != '?') {
         ++i;
+
+    }
+    if (!url[i]) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
     }
     console.log('sliced: ', url.slice(i));
     const searchParams = new URLSearchParams(url.slice(i + 1));
@@ -37,31 +47,40 @@ export async function getServerSideProps(context) {
         // const longTerm = await getSpotifyData(authToken, type, "long_term", limit);
         // console.log(tracks);
 
+        const userInfo = await getUserInfo(authToken);
+
         return {
             props: {
-                tracks: tracks
+                token: authToken,
+                tracks: tracks,
+                userInfo: userInfo
             }
         }
     } else {
         return {
-            props: {
-                tracks: null
+            redirect: {
+                destination: '/',
+                permanent: false
             }
         }
     }
 }
 
 const Track = ({ info, idx }) => {
-    const imgObject = info.album.images[1];
+    const imgObject = info.album.images[2];
     return (
-        <li key={info.name}>
-            {`${idx}. ${info.name}`}
-            <br />
+        <li key={info.name} className='track'>
+            <div className='track-info-spacing ranking-idx'>{idx}</div>
             <Image
                 src={imgObject.url}
-                height={imgObject.height / 2}
-                width={imgObject.width / 2}
+                height={imgObject.height / 1.2}
+                width={imgObject.width / 1.2}
+                className='track-info-spacing track-image'
             />
+            <div className='track-info-spacing name'>
+                {info.name}
+                <div className='artist-name'>{info.artists[0].name}</div>
+            </div>
         </li>
     )
 }
@@ -78,7 +97,7 @@ const TracksList = ({ tracks }) => {
     )
 }
 
-export default function TopTracks({ tracks }) {
+export default function TopTracks({ token, tracks, userInfo }) {
     const router = useRouter();
     useEffect(() => {
         router.replace('/top-tracks', undefined, { shallow: true });
@@ -91,7 +110,8 @@ export default function TopTracks({ tracks }) {
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
                 <meta charSet='UTF-8' />
             </Head>
-            <Button variant="text" className="top-left" onClick={() => router.back()}>Back to home</Button>
+            <ResponsiveAppBar token={token} userInfo={userInfo} />
+            <br />
             <main className={styles.main}>
                 <div>
                     <TracksList tracks={tracks} />
