@@ -1,17 +1,26 @@
-import { getSpotifyData } from '../lib/spotifyFunctions';
+import { getSpotifyData, getUserInfo } from '../lib/spotifyFunctions';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Button from '@mui/material/Button'
 import Image from 'next/image'
+import ResponsiveAppBar from './mui/ResponsiveAppBar';
 
 export async function getServerSideProps(context) {
     // console.log(context.req);
     const url = context.req.url;
     let i = 0;
-    while (url[i] != '?') {
+    while (url[i] && url[i] != '?') {
         ++i;
+    }
+    if (!url[i]) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
     }
     console.log('sliced: ', url.slice(i));
     const searchParams = new URLSearchParams(url.slice(i + 1));
@@ -30,34 +39,39 @@ export async function getServerSideProps(context) {
         const time_range = "short_term";
 
         const artists = await getSpotifyData(authToken, type, time_range, limit);
+        const userInfo = await getUserInfo(authToken);
         // console.log(artists);
 
         return {
             props: {
-                artists: artists
+                token: authToken,
+                artists: artists,
+                userInfo: userInfo
             }
         }
     } else {
         return {
-            props: {
-                artists: null
+            redirect: {
+                destination: '/',
+                permanent: false
             }
         }
     }
 }
 
 const Artist = ({ info, idx }) => {
-    const imgObject = info.images[2];
+    const imgObject = info.images[1];
     return (
-        <li key={info.name}>
-            {`${idx}. ${info.name}`}
-            <br />
+        <li key={info.name} className='artist'>
+            <div style={{ fontWeight: 500 }}>{idx}.</div>
             <Image
                 src={imgObject.url}
                 height={imgObject.height}
                 width={imgObject.width}
+                className="images"
             />
-        </li>
+            <div className='name'>{info.name}</div>
+        </li >
     )
 }
 
@@ -68,14 +82,14 @@ const ArtistsList = ({ artists }) => {
             {artists && artists.map((artist) => {
                 ++i;
                 return (
-                    <Artist info={artist} idx={i} />
+                    <Artist info={artist} idx={i} key={artist.name} />
                 )
             })}
         </ol>
     )
 }
 
-export default function TopArtists({ artists }) {
+export default function TopArtists({ token, artists, userInfo }) {
     const router = useRouter();
     useEffect(() => {
         router.replace('/top-artists', undefined, { shallow: true });
@@ -93,10 +107,13 @@ export default function TopArtists({ artists }) {
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
                 <meta charSet='UTF-8' />
             </Head>
-            <Button variant="text" className="top-left" onClick={() => router.back()}>Back to home</Button>
-            <div>
-                <ArtistsList artists={artists} />
-            </div>
+            <ResponsiveAppBar token={token} userInfo={userInfo} />
+            <br />
+            <main className={styles.main}>
+                <div>
+                    <ArtistsList artists={artists} />
+                </div>
+            </main>
         </div>
     )
 }

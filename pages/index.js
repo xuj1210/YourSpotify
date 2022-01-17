@@ -85,9 +85,10 @@ export default function Home({ authToken }) {
         <title>YourSpotify</title>
         <meta name="description" content="See your listening habits" />
         <link rel="icon" href="/favicon.ico" />
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta name="viewport" content="initial-scale=1, width=device-width height=device-height" />
         <meta charSet="UTF-8" />
       </Head>
+      {/* <ResponsiveAppBar token={authToken} /> */}
       <main className={styles.main}>
         {/* <ResponsiveAppBar code={authToken} /> */}
         <div>
@@ -101,19 +102,6 @@ export default function Home({ authToken }) {
         </div>
 
       </main>
-
-      {/* <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer> */}
     </div>
   )
 }

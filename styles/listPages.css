@@ -1,11 +1,53 @@
 ol {
     margin: auto;
     list-style-type: none;
+    padding-inline-start: 0;
 }
 
-
 li {
-    text-align: center;
-    margin: 0.5rem auto 0.5rem auto;
+    margin: 0.5rem auto auto;
+    font-size: 22px;
+    font-weight: 400;
     /* border: 1px solid black; */
+    line-height: 1.5;
+}
+
+.images {
+    border-radius: 5%;
+}
+
+.track {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.track-image {
+    min-height: 53px;
+    min-width: 53px;
+}
+
+.track-info-spacing {
+    margin: auto 1rem auto 1rem;
+}
+
+.artist-name {
+    color: rgb(110, 110, 110);
+    font-size: 0.75em;
+}
+
+.artist {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.name {
+    font-weight: 300;
+}
+
+.ranking-idx {
+    text-align: center;
+    width: 2ch;
+    font-weight: 500;
 }
