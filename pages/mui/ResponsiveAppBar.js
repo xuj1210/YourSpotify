@@ -17,11 +17,11 @@ const pages = ['Artists', 'Tracks'];
 const settings = ['Logout'];
 
 const ResponsiveAppBar = ({ token, userInfo }) => {
-    // let userPicture, userName;
-    // if (userInfo) {
-    //     userPicture = userInfo.images[0].url;
-    //     userName = userInfo.display_name;
-    // }
+    let userPicture, userName;
+    if (userInfo) {
+        userPicture = userInfo.images[0].url;
+        userName = userInfo.display_name;
+    }
 
     const router = useRouter();
 
@@ -133,8 +133,7 @@ const ResponsiveAppBar = ({ token, userInfo }) => {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                {/* <Avatar alt={userName ? userName : "User unavailable"} src={userPicture ? userPicture : "/static/images/avatar/2.jpg"} /> */}
-                                <Avatar alt={"User unavailable"} src={"/static/images/avatar/2.jpg"} />
+                                <Avatar alt={userName ? userName : "User unavailable"} src={userPicture ? userPicture : "/static/images/avatar/2.jpg"} />
                             </IconButton>
                         </Tooltip>
                         <Menu
