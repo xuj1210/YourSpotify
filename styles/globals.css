@@ -63,3 +63,9 @@ a {
   opacity: 0;
   transition: opacity 300ms
 }
+
+@media screen and (max-width: 415px) {
+  .emph {
+    font-size: 25px;
+  }
+}

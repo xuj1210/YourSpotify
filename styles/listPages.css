@@ -7,7 +7,7 @@ ol {
 li {
     margin: 0.5em auto auto auto;
     font-size: 23px;
-    font-weight: 400;
+    font-weight: 300;
     /* border: 1px solid black; */
     line-height: 1.5;
 }
@@ -48,7 +48,6 @@ li {
 }
 
 .track-name {
-    font-weight: 300;
     font-size: 1.1em;
 }
 
