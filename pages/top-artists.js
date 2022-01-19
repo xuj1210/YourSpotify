@@ -70,14 +70,14 @@ const Artist = ({ info, idx }) => {
     return (
         <li key={info.name} className='artist'>
             <div style={{ fontWeight: 500 }}>{idx}.</div>
-            <a href={info.external_urls.spotify} target="_blank">
-                <Image
-                    src={imgObject.url}
-                    height={imgObject.height / 1.5}
-                    width={imgObject.width / 1.5}
-                    className="images"
-                />
-            </a>
+            {/* <a href={info.external_urls.spotify} target="_blank"> */}
+            <Image
+                src={imgObject.url}
+                height={imgObject.height / 1.5}
+                width={imgObject.width / 1.5}
+                className="images"
+            />
+            {/* </a> */}
             <div className='name'>{info.name}</div>
         </li >
     )
@@ -90,7 +90,9 @@ const ArtistsList = ({ artists }) => {
             {artists && artists.map((artist) => {
                 ++idx;
                 return (
-                    <Artist info={artist} idx={idx} key={artist.name} />
+                    <a href={artist.uri} target="_blank">
+                        <Artist info={artist} idx={idx} key={artist.name} />
+                    </a>
                 )
             })}
         </div>

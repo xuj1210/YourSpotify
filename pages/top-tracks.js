@@ -72,14 +72,14 @@ const Track = ({ info, idx }) => {
     return (
         <li key={info.name} className='track'>
             <span className='track-info-spacing ranking-idx'>{idx}</span>
-            <a target="_blank" href={info.external_urls.spotify}>
-                <Image
-                    src={imgObject.url}
-                    height={imgObject.height}
-                    width={imgObject.width}
-                    className='track-image'
-                />
-            </a>
+            {/* <a target="_blank" href={info.external_urls.spotify}> */}
+            <Image
+                src={imgObject.url}
+                height={imgObject.height}
+                width={imgObject.width}
+                className='track-image'
+            />
+            {/* </a> */}
             <span className='track-info-spacing track-name'>
                 {info.name}
                 <div className='artist-name'>{info.artists[0].name}</div>
@@ -97,7 +97,9 @@ const TracksList = ({ tracks }) => {
         <div className="tracks-list">
             {tracks && tracks.map(track => {
                 ++idx;
-                return <Track info={track} idx={idx} key={track.name} />
+                return (<a href={track.uri} target="_blank">
+                    <Track info={track} idx={idx} key={track.name} />
+                </a>)
             })}
         </div>
     )
