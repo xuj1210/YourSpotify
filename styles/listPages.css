@@ -96,6 +96,7 @@ li {
     }
 
     li {
-        font-size: 20px
+        font-size: 20px;
+        margin: auto;
     }
 }
