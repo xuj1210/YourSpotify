@@ -17,7 +17,7 @@ a {
 
 .emph {
   font-weight: 300;
-  font-size: 20px;
+  font-size: 30px;
 }
 
 .clickable {
@@ -26,13 +26,26 @@ a {
 }
 
 .nav-arrow {
-  font-size: 13px;
+  font-size: 21px;
   font-weight: 300;
+}
+
+.login-page {
+  text-align: center;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 50px;
+}
+
+.login-text {
+  text-decoration: underline;
 }
 
 .page-enter {
   opacity: 0;
-  transform: translateY(100px);
+  transform: translateY(20px);
 }
 
 .page-enter-active {
@@ -48,6 +61,5 @@ a {
 
 .page-exit-active {
   opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 300ms, transform 300ms;
+  transition: opacity 300ms
 }

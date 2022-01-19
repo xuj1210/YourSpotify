@@ -17,9 +17,15 @@ const pages = ['Artists', 'Tracks'];
 const settings = ['Logout'];
 
 const ResponsiveAppBar = ({ token, userInfo }) => {
-    console.log(userInfo.images[0].url);
-    const userPicture = userInfo.images[0].url;
-    const userName = userInfo.display_name;
+    // console.log(userInfo.images[0].url);
+    let userPicture, userName;
+    if (userInfo) {
+        if (userInfo.images[0]) {
+            userPicture = userInfo.images[0].url;
+        }
+        userName = userInfo.display_name;
+    }
+
     const router = useRouter();
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);

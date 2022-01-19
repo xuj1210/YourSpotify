@@ -5,30 +5,51 @@ ol {
 }
 
 li {
-    margin: 0.5rem auto auto;
-    font-size: 22px;
+    margin: 0.5em auto auto auto;
+    font-size: 23px;
     font-weight: 400;
     /* border: 1px solid black; */
     line-height: 1.5;
 }
 
-.images {
-    border-radius: 5%;
+/* .images {
+    padding: 1em;
+    background: black;
+} */
+
+.artists-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 70vw;
+    grid-gap: 1em;
+}
+
+.tracks-list {
+    width: 50vw;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .track {
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
 }
 
 .track-image {
-    min-height: 53px;
-    min-width: 53px;
+    vertical-align: middle;
 }
 
 .track-info-spacing {
     margin: auto 1rem auto 1rem;
+}
+
+.track-name {
+    font-weight: 300;
+    font-size: 1.1em;
 }
 
 .artist-name {
@@ -42,12 +63,40 @@ li {
     align-items: center;
 }
 
-.name {
-    font-weight: 300;
-}
-
 .ranking-idx {
     text-align: center;
     width: 2ch;
     font-weight: 500;
+}
+
+@media screen and (max-width: 1400px) {
+    .tracks-list {
+        width: 70vw;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .tracks-list {
+        width: 80vw;
+    }
+}
+
+@media screen and (max-width: 656px) {
+    .artists-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 415px) {
+    .artists-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tracks-list {
+        width: 95vw;
+    }
+
+    li {
+        font-size: 20px
+    }
 }

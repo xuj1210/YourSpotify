@@ -5,19 +5,31 @@ import { getAccessToken, getAuthURI } from '../lib/spotifyFunctions'
 import toUrlEncoded from '../lib/toUrlEncoded'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import sliceParams from '../lib/sliceParams'
 
 export async function getServerSideProps(context) {
-  // console.log(context.req.url);
-  // if (typeof window !== "undefined") {
-  const searchParams = new URLSearchParams(context.req.url);
-  const authCode = searchParams.get('/?code');
-  console.log(authCode);
-  const redirectURI = "http://" + context.req.headers.host + "/";
+  console.log(context.req.url);
+
+  const paramsStr = sliceParams(context.req.url);
+
+  const searchParams = new URLSearchParams(paramsStr);
+  const authCode = searchParams.get('code');
+  console.log(`authcode: "${authCode}"`);
+  const token = searchParams.get('token');
+  console.log('token: ', token);
+  if (token) {
+    // went back from top artists/tracks page
+    return {
+      props: {
+        authToken: token
+      }
+    }
+  }
+
   if (authCode) {
     console.log('had authcode');
 
-
-    // clean up url
+    const redirectURI = process.env.NEXT_PUBLIC_REDIRECT_URI;
 
     const details = {
       code: authCode,
@@ -36,23 +48,9 @@ export async function getServerSideProps(context) {
   } else {
     console.log("Redirecting to Spotify login");
 
-    const reqScope = "user-top-read"
-    // let state = generateRandomString(16);
-
-    const paramsObj = {
-      response_type: 'code',
-      client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
-      scope: reqScope,
-      redirect_uri: encodeURI(redirectURI),
-      // state: state
-    };
-
-    const fullURI = getAuthURI(paramsObj);
-
     return {
-      redirect: {
-        destination: fullURI,
-        permanent: false
+      props: {
+        authToken: null
       }
     }
   }
@@ -88,20 +86,30 @@ export default function Home({ authToken }) {
         <meta name="viewport" content="initial-scale=1, width=device-width height=device-height" />
         <meta charSet="UTF-8" />
       </Head>
+
       {/* <ResponsiveAppBar token={authToken} /> */}
       <main className={styles.main}>
-        {/* <ResponsiveAppBar code={authToken} /> */}
-        <div>
-          <Link href={{ pathname: '/top-artists', query: { token: authToken } }}>
-            <a className="emph">View your current top artists <span className='nav-arrow'>&#5171;</span></a>
-          </Link>
-          <br />
-          <Link href={{ pathname: '/top-tracks', query: { token: authToken } }}>
-            <a className="emph">View your current top tracks <span className='nav-arrow'>&#5171;</span></a>
-          </Link>
-        </div>
+        {authToken ? (
+          <div>
+            <Link href={{ pathname: '/top-artists', query: { token: authToken } }}>
+              <a className="emph">View your current top artists <span className='nav-arrow'>&#5171;</span></a>
+            </Link>
+            <br />
+            <Link href={{ pathname: '/top-tracks', query: { token: authToken } }}>
+              <a className="emph">View your current top tracks <span className='nav-arrow'>&#5171;</span></a>
+            </Link>
+          </div>
+        ) :
+          (
+            <div className='login-page'>
+              <h1 className='title'>YourSpotify</h1>
+              <a className="emph login-text" href={getAuthURI()}>Login</a>
+            </div>
+          )}
+
 
       </main>
     </div>
   )
 }
+

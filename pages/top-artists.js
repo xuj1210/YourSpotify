@@ -6,15 +6,15 @@ import { useRouter } from 'next/router'
 import Button from '@mui/material/Button'
 import Image from 'next/image'
 import ResponsiveAppBar from './mui/ResponsiveAppBar';
+import sliceParams from '../lib/sliceParams';
+
+// https://your-spotify-xuj1210.vercel.app/top-artists?token=BQDZ3_blgkTX1lfPZe0YH-qe8sRWVx_zoCmYdPZNbQ7LibamZMEEc4Me_BRP85ekNpT0odLFp_901O9ODQv0UE4TLVzf0Ra-kxSA3fr3va140xwR0Nssdw_mICY74tgD651tIYLCP_-W5eh6mDfL
 
 export async function getServerSideProps(context) {
     // console.log(context.req);
     const url = context.req.url;
-    let i = 0;
-    while (url[i] && url[i] != '?') {
-        ++i;
-    }
-    if (!url[i]) {
+
+    if (!url) {
         return {
             redirect: {
                 destination: '/',
@@ -22,25 +22,30 @@ export async function getServerSideProps(context) {
             }
         }
     }
-    console.log('sliced: ', url.slice(i));
-    const searchParams = new URLSearchParams(url.slice(i + 1));
-    // let i = 0;
-    // for (const [key, value] of searchParams) {
-    //     console.log(`${i}th value: `, param[1]);
-    //     ++i;
-    // }
+
+    const paramsStr = sliceParams(url);
+    if (paramsStr === "") {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+
+    const searchParams = new URLSearchParams(paramsStr);
     const authToken = searchParams.get('token');
     console.log(authToken);
+
     if (authToken) {
         console.log('had authtoken');
 
         const type = "artists";
-        const limit = 25;
+        const limit = 36;
         const time_range = "short_term";
 
         const artists = await getSpotifyData(authToken, type, time_range, limit);
         const userInfo = await getUserInfo(authToken);
-        // console.log(artists);
 
         return {
             props: {
@@ -60,32 +65,35 @@ export async function getServerSideProps(context) {
 }
 
 const Artist = ({ info, idx }) => {
-    const imgObject = info.images[1];
+    const imgObject = info.images[0];
+
     return (
         <li key={info.name} className='artist'>
             <div style={{ fontWeight: 500 }}>{idx}.</div>
-            <Image
-                src={imgObject.url}
-                height={imgObject.height}
-                width={imgObject.width}
-                className="images"
-            />
+            <a href={info.external_urls.spotify} target="_blank">
+                <Image
+                    src={imgObject.url}
+                    height={imgObject.height / 1.5}
+                    width={imgObject.width / 1.5}
+                    className="images"
+                />
+            </a>
             <div className='name'>{info.name}</div>
         </li >
     )
 }
 
 const ArtistsList = ({ artists }) => {
-    let i = 0;
+    let idx = 0;
     return (
-        <ol>
+        <div className='artists-grid'>
             {artists && artists.map((artist) => {
-                ++i;
+                ++idx;
                 return (
-                    <Artist info={artist} idx={i} key={artist.name} />
+                    <Artist info={artist} idx={idx} key={artist.name} />
                 )
             })}
-        </ol>
+        </div>
     )
 }
 
