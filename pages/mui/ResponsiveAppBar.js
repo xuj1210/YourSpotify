@@ -17,9 +17,12 @@ const pages = ['Artists', 'Tracks'];
 const settings = ['Logout'];
 
 const ResponsiveAppBar = ({ token, userInfo }) => {
+    // console.log(userInfo.images[0].url);
     let userPicture, userName;
     if (userInfo) {
-        userPicture = userInfo.images[0].url;
+        if (userInfo.images[0]) {
+            userPicture = userInfo.images[0].url;
+        }
         userName = userInfo.display_name;
     }
 

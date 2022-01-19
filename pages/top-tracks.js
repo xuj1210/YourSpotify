@@ -3,19 +3,17 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react';
-import Button from '@mui/material/Button'
+// import Button from '@mui/material/Button'
 import Image from 'next/image'
 import ResponsiveAppBar from './mui/ResponsiveAppBar';
+// import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import sliceParams from '../lib/sliceParams';
 
 export async function getServerSideProps(context) {
     // console.log(context.req);
     const url = context.req.url;
-    let i = 0;
-    while (url[i] && url[i] != '?') {
-        ++i;
 
-    }
-    if (!url[i]) {
+    if (!url) {
         return {
             redirect: {
                 destination: '/',
@@ -23,22 +21,25 @@ export async function getServerSideProps(context) {
             }
         }
     }
-    console.log('sliced: ', url.slice(i));
-    const searchParams = new URLSearchParams(url.slice(i + 1));
-    // let i = 0;
-    // for (const [key, value] of searchParams) {
-    //     console.log(`${i}th value: `, param[1]);
-    //     ++i;
-    // }
+
+    const paramsStr = sliceParams(url);
+    if (paramsStr === "") {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+    const searchParams = new URLSearchParams(paramsStr);
+
     const authToken = searchParams.get('token');
     console.log(authToken);
     if (authToken) {
         console.log('had authtoken');
 
-        // clean up url
-
         const type = "tracks";
-        const limit = 25;
+        const limit = 50;
         const time_range = "short_term";
 
         const tracks = await getSpotifyData(authToken, type, time_range, limit);
@@ -70,30 +71,35 @@ const Track = ({ info, idx }) => {
     const imgObject = info.album.images[2];
     return (
         <li key={info.name} className='track'>
-            <div className='track-info-spacing ranking-idx'>{idx}</div>
-            <Image
-                src={imgObject.url}
-                height={imgObject.height / 1.2}
-                width={imgObject.width / 1.2}
-                className='track-info-spacing track-image'
-            />
-            <div className='track-info-spacing name'>
+            <span className='track-info-spacing ranking-idx'>{idx}</span>
+            <a target="_blank" href={info.external_urls.spotify}>
+                <Image
+                    src={imgObject.url}
+                    height={imgObject.height}
+                    width={imgObject.width}
+                    className='track-image'
+                />
+            </a>
+            <span className='track-info-spacing track-name'>
                 {info.name}
                 <div className='artist-name'>{info.artists[0].name}</div>
-            </div>
+            </span>
+            {/* <button type="button">
+                <PlayCircleOutlineIcon />
+            </button> */}
         </li>
     )
 }
 
 const TracksList = ({ tracks }) => {
-    let i = 0;
+    let idx = 0;
     return (
-        <ol>
+        <div className="tracks-list">
             {tracks && tracks.map(track => {
-                ++i;
-                return <Track info={track} idx={i} key={track.name} />
+                ++idx;
+                return <Track info={track} idx={idx} key={track.name} />
             })}
-        </ol>
+        </div>
     )
 }
 
