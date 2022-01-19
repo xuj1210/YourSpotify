@@ -69,3 +69,13 @@ a {
     font-size: 25px;
   }
 }
+
+@media screen and (min-width: 2000px) {
+  .emph {
+    font-size: 3vmin;
+  }
+
+  .nav-arrow {
+    font-size: 2.1vmin;
+  }
+}
