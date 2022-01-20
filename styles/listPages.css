@@ -86,7 +86,7 @@ li {
     }
 }
 
-@media screen and (max-width: 415px) {
+@media screen and (max-width: 500px) {
     .artists-grid {
         grid-template-columns: 1fr;
     }
@@ -96,6 +96,8 @@ li {
     }
 
     li {
-        font-size: 20px
+        font-size: 20px;
+        margin: auto;
+        margin-bottom: 0.6em;
     }
 }
