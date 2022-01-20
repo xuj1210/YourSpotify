@@ -1,4 +1,4 @@
-import { getSpotifyData, getUserInfo } from '../lib/spotifyFunctions';
+import { getSpotifyData, getUserInfo, getArtistsString } from '../lib/spotifyFunctions';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
@@ -82,7 +82,7 @@ const Track = ({ info, idx }) => {
             {/* </a> */}
             <span className='track-info-spacing track-name'>
                 {info.name}
-                <div className='artist-name'>{info.artists[0].name}</div>
+                <div className='artist-name'>{getArtistsString(info.artists)}</div>
             </span>
             {/* <button type="button">
                 <PlayCircleOutlineIcon />
